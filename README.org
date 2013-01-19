@@ -1,0 +1,7 @@
+* FOR: A Common Lisp implementation of the Interlisp FOR Macro.
+- http://www.cs.cmu.edu/afs/cs/project/ai-repository/ai/lang/lisp/code/iter/for/
+
+;;; -*- Mode: LISP; Syntax: Common-lisp; Package: USER; Base: 10 -*-
+;;; File converted  7-Jan-88 14:14:25 from source FORMACRO
+;;; Original source {DSK}<XAVIER>FORMACRO.;10 created 22-Sep-87 13:17:50
+;;; Copying: Public Domain.

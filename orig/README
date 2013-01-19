@@ -1,0 +1,112 @@
+From ccut!titcca!kddlab!uunet!seismo!sundc!pitstop!sun!decwrl!hplabs!sdcrdcf!darrelj Fri Feb 19 19:15:49 GMT+9:00 1988
+Article 416 of comp.lang.lisp:
+Path: tansei!ccut!titcca!kddlab!uunet!seismo!sundc!pitstop!sun!decwrl!hplabs!sdcrdcf!darrelj
+>From: darrelj@sdcrdcf.UUCP (Darrel VanBuer)
+Newsgroups: comp.lang.lisp
+Subject: A CL iteration macro, FOR
+Summary: code for Interlisp compatible FOR
+Keywords: iteration macro
+Message-ID: <5056@sdcrdcf.UUCP>
+Date: 7 Jan 88 22:52:07 GMT
+Reply-To: darrelj@sdcrdcf.UUCP (Darrel VanBuer)
+Organization: Unisys - System Development Group, Santa Monica
+Lines: 436
+
+Here is limited documentation on, and code for a commonlisp iteration macro
+which we developed for compatibility with an Interlisp code port.
+
+Darrel J. Van Buer, PhD; unisys; 2400 Colorado Ave; Santa Monica, CA 90406
+(213)829-7511 x5449        KI6VY        darrel@CAM.UNISYS.COM   or
+...{allegra,burdvax,cbosgd,hplabs,ihnp4}!sdcrdcf!darrelj
+
+Extracted from:
+A Common Lisp Translation Scheme for the Core of the Flexible Deductive Engine
+by Richard Fritzson, Donald P. McKay and Darrel J. Van Buer
+
+Technical Memo Number 44'
+Logic-Based Systems
+Paoli Research Center and West Coast Research Center
+Unisys Corporation
+
+December, 1986
+Revised March, 1987
+
+Unisys - Paoli Research Center
+P.O. Box 517
+Paoli, PA 19301
+
+
+
+3. The Support Functions
+A few Interlisp functions were not translated, but were instead defined in
+the Common Lisp environment so that they could be ported with little or no
+change. The primary reason  for doing this was that there were no comparable
+functions in Common Lisp, and the translations were difficult to read.
+
+The most important example of these is the Interlisp iteration constructs.
+hese allow the Interlisp programmer  to specify both simple and complex
+iterative statements in a perspicuous manner.  If these were translated into
+Common Lisp, they would result in a divergent collection of MAP functions,
+DO forms, PROG forms and GOTO expressions, nearly all of which  are far more
+difficult to read than the original expressions.
+A second reason for redefining these expressions is that this allows their
+continued use in Common Lisp programming. The Interlisp iterative statements
+have proven themselves to be invaluable in LISP programming; it would be a
+shame to give them up now in a move forward to Common Lisp.   
+
+3.1 The Unisys Common Lisp FOR Macro
+The Unisys Common Lisp FOR macro is modeled after the Interlisp iterative
+statement and a significant subset of the Interlisp version's functionality
+with only a small amount of incompatability.  For this reason, it is not
+described in detail here. The reader is referred to Section  9.8 of the
+Interlisp Reference Manual[1] for a detailed description of its use and
+capabilities.  This section describes the differences between the Unisys
+Common Lisp version and the XEROX Interlisp version.
+
+The internal documentation of the FOR macro is in the file that contains the
+code. Since it may still undergo further change, that is the best place to
+look for up to date information about how to extend or modify it.
+
+3.1.1 Differences between the Interlisp and Unisys iteration operators
+
+In the Unisys FOR macro, 
+1) The car of the form must be FOR. The other operators work inside the form,
+   but FOR is the Common Lisp macro that triggers the translation. It is
+   perfectly acceptable to write e.g.
+	(FOR WHILE (< I 0) ... 
+2) DO not use FROM without TO. The appropriate defaults will not be provided.
+   FROM and TO function as a unit and must be provided together.
+3) WHEN and UNLESS completely skip the the rest of the iteration including
+   the other generators that follow.  In Interlisp, all of the generators
+   are evaluated, even when WHEN (and UNLESS) fail (or succeed).
+4) BIND uses a PROG syntax instead of the Interlisp assignment syntax. That
+   is, you write
+	(FOR ... BIND (A B (C 0) D) ...
+   instead of
+	(FOR ... BIND A B (C _ 0) D ...
+5) None of the OLD froms (FOR OLD, IN OLD , ON OLD) are supported.
+6) INSIDE and OUTOF are not supported.
+7) DECLARE, DECLARE: and ORIGINAL are also not supported.
+8) The Unisys iteration package also supports MAX, MIN,  and UNION operators.
+
+3.1.2 List of operators that are supported in the Unisys FOR macro
+
+DO		FOR		WHEN
+COLLECT		FOR var		UNLESS
+JOIN		FOR (varlist)	WHILE
+SUM		BIND (varlist)	UNTIL
+COUNT		IN		REPEATWHILE
+ALWAYS		ON		REPEATUNTIL
+NEVER		FROM		FIRST
+THEREIS		TO		FINALLY
+LARGEST		BY		EACHTIME
+SMALLEST	AS
+MAX		INSIDE
+MIN
+UNION
+
+------------------------------------------------------------------------
+-- 
+Darrel J. Van Buer, PhD; unisys; 2400 Colorado Ave; Santa Monica, CA 90406
+(213)829-7511 x5449        KI6VY        darrel@CAM.UNISYS.COM   or
+...{allegra,burdvax,cbosgd,hplabs,ihnp4}!sdcrdcf!darrelj
